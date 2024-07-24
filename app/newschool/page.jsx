@@ -1,10 +1,22 @@
 "use client";
+
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import Link from "next/link"; // Import Link for navigation
+import { z } from "zod";
 
 export default function CreateContactForm() {
+  const zodObject = z.object({
+    email: z.string().email({ message: "Invalid email address" }),
+    name: z.string().min(3).max(255),
+    address: z.string().min(5).max(255),
+    city: z.string().min(3).max(255),
+    state: z.string().min(2).max(2),
+    contact: z.string().min(10).max(10),
+  });
+
   const router = useRouter();
   const {
     register,
@@ -16,53 +28,64 @@ export default function CreateContactForm() {
   const [loading, setLoading] = useState(false);
 
   async function onSubmit(data) {
-    setLoading(true);
-    const raw_image = data.profile[0];
-    const formData = new FormData();
-    formData.append("file", raw_image);
-    formData.append("upload_preset", "edunify");
+    const validatedData = zodObject.safeParse(data);
+    if (validatedData.success) {
+      setLoading(true);
+      const raw_image = data.profile[0];
+      const formData = new FormData();
+      formData.append("file", raw_image);
+      formData.append("upload_preset", "edunify");
 
-    try {
-      const uploadResponse = await fetch(
-        "https://api.cloudinary.com/v1_1/dnnjgmqo0/image/upload",
-        {
-          method: "POST",
-          body: formData,
+      try {
+        const uploadResponse = await fetch(
+          "https://api.cloudinary.com/v1_1/dnnjgmqo0/image/upload",
+          {
+            method: "POST",
+            body: formData,
+          }
+        );
+        if (!uploadResponse.ok) {
+          throw new Error("Image upload failed");
         }
-      );
-      if (!uploadResponse.ok) {
-        throw new Error("Image upload failed");
-      }
-      const imageData = await uploadResponse.json();
-      const imageUrl = imageData.public_id;
+        const imageData = await uploadResponse.json();
+        const imageUrl = imageData.public_id;
 
-      const contactData = { ...data, image: imageUrl };
+        const contactData = { ...data, image: imageUrl };
 
-      const response = await fetch("http://localhost:3000/api/signin", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(contactData),
-      });
-      console.log(response);
-      if (response.ok) {
-        reset();
-        toast.success("School Added successfully!");
-        router.push("/showSchool");
-      } else {
-        toast.error("Failed to create contact");
+        const response = await fetch("http://localhost:3000/api/signin", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(contactData),
+        });
+
+        if (response.ok) {
+          reset();
+          toast.success("School Added successfully!");
+          router.push("/showSchool");
+        } else {
+          toast.error("Failed to Add School");
+        }
+      } catch (error) {
+        console.error(error);
+        toast.error("An error occurred");
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.error(error);
-      toast.error("An error occurred");
-    } finally {
-      setLoading(false);
+    } else {
+      toast.error("Please enter valid details");
+      return;
     }
+    return;
   }
-
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+    <div className="relative flex justify-center items-center min-h-screen bg-gray-100">
+      <Link href="/">
+        <div className="absolute top-8 right-8 bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          Show All Schools
+        </div>
+      </Link>
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg">
         <h1 className="text-2xl font-semibold mb-6">Add New School</h1>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -80,7 +103,7 @@ export default function CreateContactForm() {
               className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                 errors.name ? "border-red-500" : ""
               }`}
-              placeholder="Enter School Name"
+              placeholder="Enter School Name Min 3 characters"
             />
             {errors.name && (
               <p className="mt-2 text-sm text-red-600">Name is required</p>
@@ -101,7 +124,7 @@ export default function CreateContactForm() {
               className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                 errors.address ? "border-red-500" : ""
               }`}
-              placeholder="Address"
+              placeholder="Min 5 characters"
             />
             {errors.address && (
               <p className="mt-2 text-sm text-red-600">Address is required</p>
@@ -122,7 +145,7 @@ export default function CreateContactForm() {
               className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                 errors.city ? "border-red-500" : ""
               }`}
-              placeholder="City"
+              placeholder="Min 2 characters"
             />
             {errors.city && (
               <p className="mt-2 text-sm text-red-600">City is required</p>
@@ -143,7 +166,7 @@ export default function CreateContactForm() {
               className={`mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                 errors.state ? "border-red-500" : ""
               }`}
-              placeholder="State"
+              placeholder="Min 3 characters"
             />
             {errors.state && (
               <p className="mt-2 text-sm text-red-600">State is required</p>
