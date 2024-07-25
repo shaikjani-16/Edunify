@@ -8,22 +8,35 @@ const prisma = new PrismaClient();
 //     bodyParser: false,
 //   },
 // };
-
+function setCorsHeaders(response) {
+  response.headers.set("Access-Control-Allow-Origin", "*");
+  response.headers.set("Access-Control-Allow-Methods", "GET,OPTIONS,POST");
+  response.headers.set("Access-Control-Allow-Headers", "Content-Type");
+  return response;
+}
 export async function GET(request) {
   const origin = request.headers.get("origin");
   try {
     const schools = await prisma.school.findMany();
-    return new NextResponse(JSON.stringify(schools), {
+    const response = new NextResponse(JSON.stringify(schools), {
       status: 200,
       headers: {
-        "Access-Control-Allow-Origin": origin,
-        "Access-Control-Allow-Methods": "GET,OPTIONS,POST",
-        "Access-Control-Allow-Headers": "Content-Type",
+        "Content-Type": "application/json",
       },
     });
+    return setCorsHeaders(response);
   } catch (error) {
     console.error(error);
-    return NextResponse.status(500).json({ error: "Database fetch error" });
+    const response = new NextResponse(
+      JSON.stringify({ error: "Database fetch error" }),
+      {
+        status: 500,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return setCorsHeaders(response);
   }
 }
 
@@ -43,22 +56,35 @@ export async function POST(request) {
       },
     });
     console.log(res);
-    return new NextResponse(JSON.stringify(res), {
+    const response = new NextResponse(JSON.stringify(res), {
       status: 201,
       headers: {
-        "Access-Control-Allow-Origin": origin,
-        "Access-Control-Allow-Methods": "GET,OPTIONS,POST",
-        "Access-Control-Allow-Headers": "Content-Type",
+        "Content-Type": "application/json",
       },
     });
+    return setCorsHeaders(response);
   } catch (error) {
-    console.log("Error while creating contact", error);
-    return NextResponse.json(
-      {
+    const response = new NextResponse(
+      JSON.stringify({
         message: "Failed to create contact",
         error: error.message,
-      },
-      { status: 500 }
+      }),
+      {
+        status: 500,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
     );
+    return setCorsHeaders(response);
   }
+}
+export async function OPTIONS() {
+  const response = new NextResponse(null, {
+    status: 204,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return setCorsHeaders(response);
 }
