@@ -14,6 +14,7 @@ const ShowSchoolsPage = () => {
           "https://edunify-np4tctqz1-shaik-janis-projects.vercel.app/api/signIn",
           {
             method: "GET",
+            mode: "no-cors",
           }
         );
         const data = await response.json();
