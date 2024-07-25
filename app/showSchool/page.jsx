@@ -4,14 +4,14 @@ import SchoolCard from "../../components/schoolCard";
 import Link from "next/link";
 
 const ShowSchoolsPage = () => {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+  // const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   const [schools, setSchools] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchSchools = async () => {
       try {
-        const response = await fetch(`${baseUrl}/api/signIn`, {
+        const response = await fetch(`/api/signIn`, {
           method: "GET",
         });
         const data = await response.json();

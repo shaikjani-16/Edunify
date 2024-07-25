@@ -29,7 +29,7 @@ export default function CreateContactForm() {
 
   async function onSubmit(data) {
     const validatedData = zodObject.safeParse(data);
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+    // const baseUrl = process.env.NEXT_PUBLIC_API_URL;
     if (validatedData.success) {
       setLoading(true);
       const raw_image = data.profile[0];
@@ -53,7 +53,7 @@ export default function CreateContactForm() {
 
         const contactData = { ...data, image: imageUrl };
 
-        const response = await fetch(`${baseUrl}/api/signIn`, {
+        const response = await fetch(`/api/signIn`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
