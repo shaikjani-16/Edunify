@@ -1,7 +1,7 @@
 "use client";
 import ShowImage from "./ShowImage";
 
-const SchoolCard = ({ school }) => {
+const schoolCard = ({ school }) => {
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden">
       <ShowImage imageid={school.image} />
@@ -15,4 +15,4 @@ const SchoolCard = ({ school }) => {
   );
 };
 
-export default SchoolCard;
+export default schoolCard;

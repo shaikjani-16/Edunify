@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import SchoolCard from "../../components/SchoolCard";
+import SchoolCard from "../../components/schoolCard";
 import Link from "next/link";
 
 const ShowSchoolsPage = () => {
