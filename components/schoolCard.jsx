@@ -1,5 +1,5 @@
 "use client";
-import ShowImage from "./ShowImage";
+import ShowImage from "./showImage";
 
 const schoolCard = ({ school }) => {
   return (
