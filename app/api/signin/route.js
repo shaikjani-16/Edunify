@@ -9,10 +9,18 @@ const prisma = new PrismaClient();
 //   },
 // };
 
-export async function GET() {
+export async function GET(request) {
+  const origin = request.headers.get("origin");
   try {
     const schools = await prisma.school.findMany();
-    return NextResponse.json(schools);
+    return new NextResponse(JSON.stringify(schools), {
+      status: 200,
+      headers: {
+        "Access-Control-Allow-Origin": origin,
+        "Access-Control-Allow-Methods": "GET,OPTIONS,POST",
+        "Access-Control-Allow-Headers": "Content-Type",
+      },
+    });
   } catch (error) {
     console.error(error);
     return NextResponse.status(500).json({ error: "Database fetch error" });
@@ -35,7 +43,14 @@ export async function POST(request) {
       },
     });
     console.log(res);
-    return NextResponse.json(res, { status: 201 });
+    return new NextResponse(JSON.stringify(res), {
+      status: 201,
+      headers: {
+        "Access-Control-Allow-Origin": origin,
+        "Access-Control-Allow-Methods": "GET,OPTIONS,POST",
+        "Access-Control-Allow-Headers": "Content-Type",
+      },
+    });
   } catch (error) {
     console.log("Error while creating contact", error);
     return NextResponse.json(
