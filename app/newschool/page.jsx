@@ -53,7 +53,7 @@ export default function CreateContactForm() {
 
         const contactData = { ...data, image: imageUrl };
 
-        const response = await fetch(`${baseUrl}/api/signIn`, {
+        const response = await fetch(`/api/signIn`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
