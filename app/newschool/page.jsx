@@ -13,7 +13,7 @@ export default function CreateContactForm() {
     name: z.string().min(3).max(255),
     address: z.string().min(5).max(255),
     city: z.string().min(3).max(255),
-    state: z.string().min(2).max(2),
+    state: z.string().min(2).max(100),
     contact: z.string().min(10).max(10),
   });
 
@@ -53,7 +53,7 @@ export default function CreateContactForm() {
 
         const contactData = { ...data, image: imageUrl };
 
-        const response = await fetch(`/api/signIn`, {
+        const response = await fetch(`/api/signin`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
