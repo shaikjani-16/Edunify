@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    
     "dev": "prisma generate && next dev",
     "build": "prisma generate && next build",
     "start": "next start",
@@ -17,6 +16,7 @@
     "cors": "^2.8.5",
     "formidable": "^3.5.1",
     "fs": "^0.0.1-security",
+    "micro-cors": "^0.1.1",
     "multer": "^1.4.5-lts.1",
     "mysql2": "^3.10.3",
     "next": "14.2.5",
