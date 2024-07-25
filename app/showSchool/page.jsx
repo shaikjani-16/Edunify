@@ -5,12 +5,12 @@ import Link from "next/link";
 
 const ShowSchoolsPage = () => {
   const [schools, setSchools] = useState([]);
-  const [loading, setLoading] = useState(true); // Add loading state
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchSchools = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/signin", {
+        const response = await fetch("http://localhost:3000/api/signIn", {
           method: "GET",
         });
         const data = await response.json();
@@ -18,11 +18,11 @@ const ShowSchoolsPage = () => {
       } catch (error) {
         console.error("Failed to fetch schools:", error);
       } finally {
-        setLoading(false); // Set loading to false once data is fetched
+        setLoading(false);
       }
     };
 
-    fetchSchools(); // Call the async function
+    fetchSchools();
   }, []);
 
   if (loading) {
@@ -39,7 +39,7 @@ const ShowSchoolsPage = () => {
   return (
     <div className="min-h-screen bg-gray-100 py-8 px-4 relative">
       <h1 className="text-3xl font-bold text-center mb-8">Schools</h1>
-      <Link href="/newschool">
+      <Link href="/newSchool">
         <div className="absolute top-8 right-8 bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
           Add School
         </div>

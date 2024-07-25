@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import Link from "next/link"; // Import Link for navigation
+import Link from "next/link";
 import { z } from "zod";
 
 export default function CreateContactForm() {
@@ -52,7 +52,7 @@ export default function CreateContactForm() {
 
         const contactData = { ...data, image: imageUrl };
 
-        const response = await fetch("http://localhost:3000/api/signin", {
+        const response = await fetch("http://localhost:3000/api/signIn", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

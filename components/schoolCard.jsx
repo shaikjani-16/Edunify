@@ -1,5 +1,5 @@
 "use client";
-import ShowImage from "./ShowImage"; // Import with capitalized name
+import ShowImage from "./ShowImage";
 
 const SchoolCard = ({ school }) => {
   return (
