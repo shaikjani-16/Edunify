@@ -52,13 +52,16 @@ export default function CreateContactForm() {
 
         const contactData = { ...data, image: imageUrl };
 
-        const response = await fetch("http://localhost:3000/api/signIn", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(contactData),
-        });
+        const response = await fetch(
+          "https://edunify-np4tctqz1-shaik-janis-projects.vercel.app/api/signIn",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(contactData),
+          }
+        );
 
         if (response.ok) {
           reset();

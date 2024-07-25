@@ -10,9 +10,12 @@ const ShowSchoolsPage = () => {
   useEffect(() => {
     const fetchSchools = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/signIn", {
-          method: "GET",
-        });
+        const response = await fetch(
+          "https://edunify-np4tctqz1-shaik-janis-projects.vercel.app/api/signIn",
+          {
+            method: "GET",
+          }
+        );
         const data = await response.json();
         setSchools(data);
       } catch (error) {
