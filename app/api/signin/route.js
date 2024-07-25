@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
-
+import cors from "./middleware/cors";
 const prisma = new PrismaClient();
 
 // export const config = {
@@ -15,7 +15,7 @@ function setCorsHeaders(response) {
   return response;
 }
 export async function GET(request) {
-  const origin = request.headers.get("origin");
+  await cors(request, res);
   try {
     const schools = await prisma.school.findMany();
     const response = new NextResponse(JSON.stringify(schools), {
@@ -41,6 +41,7 @@ export async function GET(request) {
 }
 
 export async function POST(request) {
+  cors(request, res);
   try {
     const { name, address, city, state, contact, email, image } =
       await request.json();
