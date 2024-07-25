@@ -11,7 +11,7 @@ const ShowSchoolsPage = () => {
   useEffect(() => {
     const fetchSchools = async () => {
       try {
-        const response = await fetch(`/api/signIn`, {
+        const response = await fetch(`/api/signin`, {
           method: "GET",
         });
         const data = await response.json();
