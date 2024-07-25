@@ -4,18 +4,16 @@ import SchoolCard from "../../components/schoolCard";
 import Link from "next/link";
 
 const ShowSchoolsPage = () => {
+  const baseUrl = process.env.NEXT_PUBLIC_URL;
   const [schools, setSchools] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchSchools = async () => {
       try {
-        const response = await fetch(
-          "https://edunify-np4tctqz1-shaik-janis-projects.vercel.app/api/signIn",
-          {
-            method: "GET",
-          }
-        );
+        const response = await fetch(`${baseUrl}/api/signIn`, {
+          method: "GET",
+        });
         const data = await response.json();
         setSchools(data);
       } catch (error) {

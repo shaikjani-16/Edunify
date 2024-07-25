@@ -29,6 +29,7 @@ export default function CreateContactForm() {
 
   async function onSubmit(data) {
     const validatedData = zodObject.safeParse(data);
+    const baseUrl = process.env.NEXT_PUBLIC_URL;
     if (validatedData.success) {
       setLoading(true);
       const raw_image = data.profile[0];
@@ -52,17 +53,14 @@ export default function CreateContactForm() {
 
         const contactData = { ...data, image: imageUrl };
 
-        const response = await fetch(
-          "https://edunify-np4tctqz1-shaik-janis-projects.vercel.app/api/signIn",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
+        const response = await fetch(`${baseUrl}/api/signIn`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
 
-            body: JSON.stringify(contactData),
-          }
-        );
+          body: JSON.stringify(contactData),
+        });
 
         if (response.ok) {
           reset();
